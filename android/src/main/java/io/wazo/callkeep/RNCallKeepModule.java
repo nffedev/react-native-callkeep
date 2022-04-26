@@ -534,7 +534,7 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule {
             
             switch (intent.getAction()) {
                 case ACTION_PHONE_STATE_CHANGED:
-                    args.putString("callStateChange", attributeMap.get(EXTRA_STATE));
+                    args.putString("callStateChange", TelephonyManager.EXTRA_STATE);
                     sendEventToJS("RNCallKeepCallStateChange", args);
                     break;
                 case ACTION_END_CALL:
