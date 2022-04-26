@@ -132,6 +132,13 @@ export default class RNCallKeep {
   static async hasOutgoingCall(): Promise<boolean> {
 
   }
+  
+  /**
+     * @description hasNativeOSCall method is available only on Android.
+  */
+  static async hasNativeOSCall(): Promise<boolean> {
+
+  }
 
   /**
      * @description setMutedCall method is available only on iOS.
