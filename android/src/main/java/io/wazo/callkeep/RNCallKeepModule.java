@@ -43,6 +43,7 @@ import android.telecom.DisconnectCause;
 import android.telecom.PhoneAccount;
 import android.telecom.PhoneAccountHandle;
 import android.telecom.TelecomManager;
+import andriod.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
@@ -524,13 +525,44 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule {
         }
         hasPhoneAccountPromise.resolve(true);
     }
+    
+    private class NativeOSPhoneStateListener extends PhoneStateListener {
+        public static Boolean phoneRinging = false;
+
+        public void onCallStateChanged(int state, String incomingNumber) {
+            WritableMap args = Arguments.createMap();
+
+            switch (state) {
+            case TelephonyManager.CALL_STATE_IDLE:
+                phoneRinging = false;
+                args.putString("callState", "idle");
+                sendEventToJS("RNCallKeepCheckReachability", args);
+                break;
+            case TelephonyManager.CALL_STATE_OFFHOOK:
+                phoneRinging = false;
+                args.putString("callState", "offhook");
+                sendEventToJS("RNCallKeepCheckReachability", args);
+                break;
+            case TelephonyManager.CALL_STATE_RINGING:
+                phoneRinging = true;
+                args.putString("callState", "ringing");
+                sendEventToJS("RNCallKeepCheckReachability", args);
+                break;
+            }
+        }
+    }
 
     private class VoiceBroadcastReceiver extends BroadcastReceiver {
+        TelephonyManager telephonyManager;
         @Override
         public void onReceive(Context context, Intent intent) {
             WritableMap args = Arguments.createMap();
             HashMap<String, String> attributeMap = (HashMap<String, String>)intent.getSerializableExtra("attributeMap");
-
+            
+            NativeOSPhoneStateListener phoneListener = new NativeOSPhoneStateListener();
+            telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+            
             switch (intent.getAction()) {
                 case ACTION_END_CALL:
                     args.putString("callUUID", attributeMap.get(EXTRA_CALL_UUID));
@@ -578,6 +610,9 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule {
                     sendEventToJS("RNCallKeepCheckReachability", null);
                     break;
             }
+        }
+        public void onDestroy() {
+            telephonyManager.listen(null, PhoneStateListener.LISTEN_NONE);
         }
     }
 }
