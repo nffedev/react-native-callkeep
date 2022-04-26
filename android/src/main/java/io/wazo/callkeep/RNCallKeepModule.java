@@ -347,8 +347,8 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule {
     }
     
     @ReactMethod
-    public void hasNativeOSCall(Promise promise) {
-        promise.respolve(TelecomManager.isInCall());
+    public static void hasNativeOSCall(Promise promise) {
+        promise.resolve(TelecomManager.isInCall());
     }
 
     @ReactMethod
