@@ -119,6 +119,9 @@ class RNCallKeep {
 
   hasOutgoingCall = async () =>
     isIOS ? null : await RNCallKeepModule.hasOutgoingCall();
+  
+  hasNativeOSCall = async () => 
+    isIOS ? null : await RNCallKeepModule.hasNativeOSCall();
 
   setMutedCall = (uuid, shouldMute) => {
     RNCallKeepModule.setMutedCall(uuid, shouldMute);
