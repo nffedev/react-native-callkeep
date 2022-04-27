@@ -86,7 +86,7 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule {
     public static final String ACTION_ONGOING_CALL = "ACTION_ONGOING_CALL";
     public static final String ACTION_AUDIO_SESSION = "ACTION_AUDIO_SESSION";
     public static final String ACTION_CHECK_REACHABILITY = "ACTION_CHECK_REACHABILITY";
-    public static final String ACTION_PHONE_STATE_CHANGED = "ACTION_PHONE_STATE_CHANGED";
+    public static final String ACTION_PHONE_STATE_CHANGED = "android.intent.action.PHONE_STATE";
 
     private static final String E_ACTIVITY_DOES_NOT_EXIST = "E_ACTIVITY_DOES_NOT_EXIST";
     private static final String REACT_NATIVE_MODULE_NAME = "RNCallKeep";
@@ -536,7 +536,8 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule {
             
             switch (intent.getAction()) {
                 case ACTION_PHONE_STATE_CHANGED:
-                    args.putString("callStateChange", TelephonyManager.EXTRA_STATE);
+                    String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
+                    args.putString("callStateChange", state);
                     sendEventToJS("RNCallKeepCallStateChange", args);
                     break;
                 case ACTION_END_CALL:
