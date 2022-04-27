@@ -1,4 +1,5 @@
 export type Events =
+  'callKeepCallStateChange' |
   'didReceiveStartCallAction' |
   'answerCall' |
   'endCall' |
