@@ -532,7 +532,11 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule {
         public void onReceive(Context context, Intent intent) {
             WritableMap args = Arguments.createMap();
             HashMap<String, String> attributeMap = (HashMap<String, String>)intent.getSerializableExtra("attributeMap");
-
+            
+            if (intent.getAction().equals("android.intent.action.PHONE_STATE")) {
+                String state = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
+                Log.d(TAG,"Phone_State_Receiver: Call State=" + state);
+            }
             
             switch (intent.getAction()) {
                 case ACTION_PHONE_STATE_CHANGED:
