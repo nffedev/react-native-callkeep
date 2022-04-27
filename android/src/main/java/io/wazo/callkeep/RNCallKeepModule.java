@@ -494,7 +494,7 @@ public class RNCallKeepModule extends ReactContextBaseJavaModule {
     private void registerReceiver() {
         if (!isReceiverRegistered) {
             IntentFilter intentFilter = new IntentFilter();
-            IntentFilter.addAction(ACTION_PHONE_STATE_CHANGED);
+            intentFilter.addAction(ACTION_PHONE_STATE_CHANGED);
             intentFilter.addAction(ACTION_END_CALL);
             intentFilter.addAction(ACTION_ANSWER_CALL);
             intentFilter.addAction(ACTION_MUTE_CALL);
