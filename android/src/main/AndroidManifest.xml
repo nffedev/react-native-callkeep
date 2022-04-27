@@ -3,4 +3,9 @@
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <receiver android:name="RNCallKeepModule"> 
+     <intent-filter>
+          <action android:name="android.intent.action.PHONE_STATE"/>    
+     </intent-filter>
+</receiver>
 </manifest>
